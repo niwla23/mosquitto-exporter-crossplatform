@@ -12,6 +12,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+
+    - name: Checkout upstream
+      uses: actions/checkout@v2
+      repository: https://github.com/sapcc/mosquitto-exporter.git
+      path: upstream
+
     - name: Login to Github registry
       uses: docker/login-action@v1
       with:
@@ -46,8 +52,8 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         platforms: linux/amd64,linux/arm/v7,linux/arm64
-        context: .
-        file: Dockerfile
+        context: ./upstream
+        file: upstream/Dockerfile
         push: true
         tags: ghcr.io/niwla23/mosquitto-exporter-crossplatform:latest,ghcr.io/niwla23/mosquitto-exporter-crossplatform:${{steps.upstream_release.outputs.release}}
 
