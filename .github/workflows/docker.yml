@@ -61,10 +61,22 @@ jobs:
         push: true
         tags: ghcr.io/niwla23/mosquitto-exporter-crossplatform:latest,ghcr.io/niwla23/mosquitto-exporter-crossplatform:${{steps.upstream_release.outputs.release}}
 
-    - name: Create a Release
-      if: steps.upstream_release.outputs.release != steps.release.outputs.release
-      uses: elgohr/Github-Release-Action@v4
+    # - name: Create a Release
+    #   if: steps.upstream_release.outputs.release != steps.release.outputs.release
+    #   uses: elgohr/Github-Release-Action@v4
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     title: ${{steps.upstream_release.outputs.release}}
+
+   - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        title: ${{steps.upstream_release.outputs.release}}
+        tag_name: ${{steps.upstream_release.outputs.release}}
+        release_name: ${{steps.upstream_release.outputs.release}}
+        body: tracks upstream build status
+        draft: false
+        prerelease: false
