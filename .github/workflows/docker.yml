@@ -1,10 +1,10 @@
 name: Docker CI
 
-on:
-  push:
-    branches: [ main ]
-  schedule:
-    - cron: '*/15 * * * *'
+on: {}
+  #push:
+   # branches: [ main ]
+  #schedule:
+    #- cron: '*/15 * * * *'
 
 jobs:
   build:
