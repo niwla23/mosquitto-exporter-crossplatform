@@ -3,8 +3,8 @@ name: Docker CI
 on:
   push:
     branches: [ main ]
-  #schedule:
-    #- cron: '*/15 * * * *'
+  schedule:
+    - cron: '0 */12 * * *'
 
 jobs:
   build:
@@ -40,6 +40,18 @@ jobs:
         repo: mosquitto-exporter-crossplatform
         excludes: prerelease, draft
 
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{steps.upstream_release.outputs.release}}
+        release_name: ${{steps.upstream_release.outputs.release}}
+        body: tracks upstream build status
+        draft: false
+        prerelease: false
+
     - run: echo ${{steps.upstream_release.outputs.release}}
     - run: echo ${{steps.release.outputs.release}}
 
@@ -68,14 +80,3 @@ jobs:
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     #   with:
     #     title: ${{steps.upstream_release.outputs.release}}
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      with:
-        tag_name: ${{steps.upstream_release.outputs.release}}
-        release_name: ${{steps.upstream_release.outputs.release}}
-        body: tracks upstream build status
-        draft: false
-        prerelease: false
