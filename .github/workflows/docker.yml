@@ -68,8 +68,7 @@ jobs:
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     #   with:
     #     title: ${{steps.upstream_release.outputs.release}}
-
-   - name: Create Release
+    - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
