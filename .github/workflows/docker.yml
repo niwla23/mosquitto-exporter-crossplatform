@@ -40,6 +40,9 @@ jobs:
         repo: mosquitto-exporter-crossplatform
         excludes: prerelease, draft
 
+    - run: echo ${{steps.upstream_release.outputs.release}}
+    - run: echo ${{steps.release.outputs.release}}
+
     - name: Set up QEMU
       if: steps.upstream_release.outputs.release != steps.release.outputs.release
       uses: docker/setup-qemu-action@v1
